@@ -1,0 +1,27 @@
+- /cygdrive/c/System\ Volume\ Information/*
+- /cygdrive/c/Windows/System32/winevt/*
+- /cygdrive/c/Windows/System32/catroot/*
+- /cygdrive/c/Windows/System32/catroot2/*
+- /cygdrive/c/Windows/System32/config/*
+- /cygdrive/c/Windows/ServiceProfiles/*
+- /cygdrive/c/ProgramData/Microsoft/*
+- /cygdrive/c/Windows/System32/wdi/*
+- /cygdrive/c/Windows/System32/wfp/*
+- /cygdrive/c/Windows/System32/sru/*
+- /cygdrive/c/proc/sys/Device/*
+- /cygdrive/c/proc/registry*
+- /cygdrive/c/Windows/Logs/*
+- /cygdrive/c/hiberfil.sys
+- /cygdrive/c/pagefile.sys
+- /cygdrive/c/swapfile.sys
+- /proc/sys/Sessions/
+- UsrClass.dat
+- ntuser*
+- NTUSER*
+- *Cache*
+- *cache*
+- *Lock*
+- *lock*
+- *LOG*
+- *log*
+- *.tmp

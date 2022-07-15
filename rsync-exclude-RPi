@@ -1,0 +1,11 @@
+- /var/lib/pacman/sync/*
+- /home/pi/Dropbox
+- /lost+found
+- /media/*
+- /cdrom/*
+- /proc/*
+- /mnt/*
+- /run/*
+- /tmp/*
+- /sys/*
+- /dev/*

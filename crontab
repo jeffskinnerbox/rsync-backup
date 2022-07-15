@@ -1,0 +1,56 @@
+
+# Maintainer:   jeffskinnerbox@yahoo.com / www.jeffskinnerbox.me
+# Version:      1.0.0
+
+# Each task to run has to be defined through a single line
+# indicating with different fields when the task will be run
+# and what command to run for the task
+#
+# To define the time you can provide concrete values for
+# minute (m), hour (h), day of month (dom), month (mon),
+# and day of week (dow) or use '*' in these fields (for 'any').#
+# Notice that tasks will be started based on the cron's system
+# daemon's notion of time and timezones.
+#
+# Output of the crontab jobs (including errors) is sent through
+# email to the user the crontab file belongs to (unless redirected).
+#
+# For example, you can run a backup of all your user accounts
+# at 5 a.m every week with:
+# 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
+#
+# Instead of the first five fields, one of eight special strings may be applied:
+# string         meaning
+# ------         -------
+# @reboot        Run once, at startup.
+# @yearly        Run once a year, "0 0 1 1 *".
+# @annually      (same as @yearly)
+# @monthly       Run once a month, "0 0 1 * *".
+# @weekly        Run once a week, "0 0 * * 0".
+# @daily         Run once a day, "0 0 * * *".
+# @midnight      (same as @daily)
+# @hourly        Run once an hour, "0 * * * *".
+#
+# Examples
+# @reboot <command> #Runs at boot
+# @yearly <command> #Runs once a year [0 0 1 1 *]
+#
+#
+#
+# For more information see the manual pages of crontab(5) and cron(8)
+#
+#     +------------- minutes (0 - 59)
+#     |      +----------- hour (0 - 23)
+#     |      |          +--------- day of month (1 - 31)
+#     |      |          |         +------- month (1 - 12)
+#     |      |          |         |         +----- day of week (0 - 6) (Sunday = 0)
+#     |      |          |         |         |            +--- command to be executed
+#     |      |          |         |         |            |
+#     |      |          |         |         |            |
+#     m      h         dom       mon       dow
+#   minute  hour  day-of-month  month   day-of-week   command
+      0     */4         *         *         *         /home/backup_user/bin/rsnapshot-wrapper.sh hourly
+     30      2          *         *         *         /home/backup_user/bin/rsnapshot-wrapper.sh daily
+     30     10          *         *         6         /home/backup_user/bin/rsnapshot-wrapper.sh weekly
+     30     14          1         *         *         /home/backup_user/bin/rsnapshot-wrapper.sh monthly
+

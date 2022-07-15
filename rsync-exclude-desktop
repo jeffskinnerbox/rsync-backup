@@ -1,0 +1,10 @@
+- /var/lib/pacman/sync/*
+- /lost+found
+- /media/*
+- /cdrom/*
+- /proc/*
+- /mnt/*
+- /run/*
+- /tmp/*
+- /sys/*
+- /dev/*
