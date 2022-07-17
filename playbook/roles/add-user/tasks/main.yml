@@ -1,0 +1,97 @@
+
+# role file to create a new user account
+
+---
+
+
+# --- Install Block of Tasks ---------------------------------------------------
+
+- name: Create user with approprate access rights
+  block:
+    - name: Create a 'no-login' user account for "{{ user }}"
+      user:
+        state: present           # taking action if the state is different from what is stated
+        name: "{{ user }}"
+        uid: 400                 # use number less that 500 so user doesn't appear on login screen list
+        create_home: true
+        home: /home/backup_user
+        shell: /sbin/nologin
+        generate_ssh_key: true
+
+    - name: Create /etc/sudoers.d/backup_user
+      file:
+        path: /etc/sudoers.d/backup_user
+        owner: root
+        group: root
+        mode: u+rw,g-w,o-w
+        state: touch
+
+    - name: Add "{{ user }}" to /etc/sudoers.d/backup_user file so the don't need 'sudo'
+      copy:
+        dest: /etc/sudoers.d/backup_user  # this is the target file for creation
+        follow: true     # if true, 'dest' will be overwritten by 'content'
+        content: |
+          {{ user }}    ALL=NOPASSWD:    /usr/bin/rsync
+          {{ user }}    ALL=NOPASSWD:    /usr/bin/rsnapshot
+        # validate: /usr/sbin/visudo -csf %s
+
+    #   lineinfile:
+    #     state: present               # whether the 'line' should be there or not
+    #     backup: true                 # before change, create a backup file in 'path', include the timestamp
+    #     validate: 'visudo -cf %s'    # when done, sudoers file will be checked for syntax errors, owner, and mode
+    #     path: /etc/sudoers           # this is the target file for modification
+    #     # regexp: '^{{ user }}'        # regular expression to look for in every line of the file, for state=present, thi is the line to replace if the string is found in the file, only the last line found will be replaced.
+    #     # regexp: "^%sudo	ALL=(ALL:ALL) ALL\n"   # look for this line
+    #     line: "{{ item }}"
+    #     insertafter: "%sudo	ALL=(ALL:ALL) ALL"
+    #   with_items:
+    #     - "\n# allows this user to not need a password to sudo the specified command(s)"
+    #     - "{{ user }}    ALL=NOPASSWD:    /usr/bin/rsync"
+    #     - "{{ user }}    ALL=NOPASSWD:    /usr/bin/rsnapshot"
+
+    # - name: Add "{{ user }}" to /etc/sudoers file so the don't need 'sudo'
+    #   blockinfile:
+    #     state: present               # whether the 'line' should be there or not
+    #     path: /etc/sudoers           # this is the target file for modification
+    #     backup: true                 # before change, create a backup file in 'path', include the timestamp
+    #     marker: "# these user do not need a password to sudo these command(s) --- ansible managed text block"
+    #     insertafter: "sudo	ALL=(ALL:ALL) ALL"
+    #     block: |
+    #       {{ user }}    ALL=NOPASSWD:    /usr/bin/rsync
+    #       {{ user }}    ALL=NOPASSWD:    /usr/bin/rsnapshot
+    #     validate: 'visudo -cf %s'    # when done, sudoers file will be checked for syntax errors, owner, and mode
+  tags: ['never', 'install']         # 'never' implies you must pass the tag to execute this block
+
+# --- Uninstall Block of Tasks -------------------------------------------------
+
+- name: Remove the user
+  block:
+    - name: remove "{{ user }}" user account
+      user:
+        state: absent
+        name: "{{ user }}"
+        remove: true                 # if true, remove the directories associated with the user
+
+    - name: Remove "{{ user }}" from /etc/sudoers file
+      file:
+        path: /etc/sudoers.d/backup_user  # this is the target file for deletion
+        state: absent
+
+    # - name: Remove "{{ user }}" from /etc/sudoers file
+    #   lineinfile:
+    #     state: absent                # whether the line should be there or not
+    #     backup: true                 # before change, create a backup file in 'path', include the timestamp
+    #     validate: 'visudo -cf %s'    # when done, sudoers file will be checked for syntax errors, owner, and mode
+    #     path: /etc/sudoers           # this is the target file for modification
+    #     regexp: '^{{ user }}'        # regular expression to look for in every line of the file
+
+    # - name: Remove "{{ user }}" from /etc/sudoers file
+    #   blockinfile:
+    #     state: absent                # whether the line should be there or not
+    #     backup: true                 # before change, create a backup file in 'path', include the timestamp
+    #     path: /etc/sudoers           # this is the target file for modification
+    #     marker: "# these user do not need a password to sudo these command(s) --- ansible managed text block"
+    #     block: ""
+    #     validate: 'visudo -cf %s'    # when done, sudoers file will be checked for syntax errors, owner, and mode
+  tags: ['never', 'uninstall']       # 'never' implies you must pass the tag to execute this block
+

@@ -1,0 +1,47 @@
+
+# role file to update all packages (equivalent to "apt update && apt full-upgrade")
+
+---
+
+
+# --- Install Block of Tasks ---------------------------------------------------
+
+- name: Install full-upgrade, add required packages, and reboot if needed
+  block:
+    - name: update the apt repository cache
+      apt:
+        state: latest
+        update_cache: true
+        cache_valid_time: 86400
+
+    - name: upgrade all apt repository packages
+      apt:
+        update_cache: false
+        upgrade: dist          # 'dist' does a 'dist-upgrade', where 'full' does 'full-upgrade'
+
+    - name: check if a reboot is needed because of kernel changes, etc.
+      register: reboot_required_file
+      stat:
+        path: var/run/reboot-required
+        get_md5: false
+
+    - name: reboot the box if needed
+      reboot:
+        msg: "Reboot Initiated By Ansible"
+        connect_timeout: 5
+        reboot_timeout: 300
+        pre_reboot_delay: 0
+        post_reboot_delay: 30
+        test_command: uptime
+      when: reboot_required_file.stat.exists
+  tags: ['never', 'install']     # 'never' implies you must pass the tag to execute this block
+
+# --- Uninstall Block of Tasks -------------------------------------------------
+
+- name: Uninstall full-upgrade on all packages
+  block:
+    - name: message to user
+      debug:
+        msg: Nothing done. Packages newly installed and up-grades are unchanged.
+  tags: ['never', 'uninstall']   # 'never' implies you must pass the tag to execute this block
+

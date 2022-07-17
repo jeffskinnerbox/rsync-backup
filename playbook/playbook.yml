@@ -1,0 +1,36 @@
+
+# Maintainer:   jeffskinnerbox@yahoo.com / www.jeffskinnerbox.me
+# Version:      1.5.0
+#
+# While your within playbook directory, check the following prior to doing the play
+#
+# YAML linter to spot Ansible YAML syntax errors
+#    yamllint playbook.yml roles
+#
+# Ansible linter to spot Ansible playbook syntax errors
+#    ansible-playbook -i inventory -l test-pi playbook.yml --syntax-check
+#
+# Generate a list of tasks that will be executed for the tags
+#    ansible-playbook -i inventory -l test-pi playbook.yml --tags install --list-tasks
+#
+# Ansible dry-run checking for errors and showing results of a run
+#    ansible-playbook -i inventory -l test-pi playbook.yml --tags install --check
+#
+# Run the playbook for real
+#    ansible-playbook -i inventory -l test-pi playbook.yml --tags install
+#
+
+---
+
+- name: Install / Uninstall rsync-backup tools
+  hosts: all
+  become: true         # set to 'true' to activate privilege escalation => use sudo and be root by default
+  become_method: sudo
+  gather_facts: true
+  vars:
+    user: backup_user
+
+  roles:
+    - update
+    - prerequisites
+    - add-user

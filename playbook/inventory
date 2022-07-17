@@ -1,0 +1,18 @@
+
+# Maintainer:   jeffskinnerbox@yahoo.com / www.jeffskinnerbox.me
+# Version:      1.5.0
+
+
+# ansible managed hosts (aka nodes)
+[nodes]
+test-pi ansible_ssh_host=192.168.1.79 ansible_ssh_port=22 kubernetes_role=node
+
+# ansible varables applied to [nodes]
+[nodes:vars]
+ansible_user='pi'
+ansible_ssh_user=pi
+deploy_target=pi
+ansible_become=yes
+ansible_become_method=sudo
+ansible_python_interpreter='/usr/bin/env python3'
+

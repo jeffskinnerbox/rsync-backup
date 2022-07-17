@@ -1,0 +1,37 @@
+
+# role file to install desirable and required prerequisites
+
+---
+
+
+# --- Install Block of Tasks ---------------------------------------------------
+
+- name: Install desirable and required prerequisites
+  block:
+  - name: run the equivalent of "apt-get update"
+    apt:
+      update_cache: true
+      cache_valid_time: 86400
+
+  - name: install desirable prerequisite packages
+    apt:
+      state: latest
+      update_cache: false
+      pkg: ['git', 'curl', 'wget', 'ntp', 'apt-transport-https', 'gnupg2']
+
+  - name: install required packages to suport rsync-backup
+    apt:
+      state: latest
+      update_cache: false
+      pkg: ['rsync', 'grsync', 'rsnapshot']
+  tags: ['never', 'install']     # 'never' implies you must pass the tag to execute this block
+
+# --- Uninstall Block of Tasks -------------------------------------------------
+
+- name: Uninstall desirable and required prerequisites
+  block:
+    - name: message to user
+      debug:
+        msg: Nothing done. Packages newly installed and up-grades are unchanged.
+  tags: ['never', 'uninstall']   # 'never' implies you must pass the tag to execute this block
+
