@@ -1,0 +1,43 @@
+
+# role file to create the rsnapshot container
+
+---
+
+
+# --- Install Block of Tasks ---------------------------------------------------
+
+- name: Install rsnapshot container
+  block:
+  - name: create a rsnapshot container
+    docker_container:
+      name: rsnapshot
+      state: present
+      image: lscr.io/linuxserver/rsnapshot:latest
+      env:
+        PUID: "400"                # user id of backup_user
+        PGID: "400"                # group id of backup_user
+        TZ: "America/New_York"     # specify a timezone to use
+      volumes:
+        - "{{ user_path }}/{{ rsnapshop_source_data }}:/data"       # optional - storage location for data to be backed up
+        - "{{ user_path }}/{{ rsnapshop_sink_data }}:/.snapshots"   # optional - storage location for all snapshots
+        - "{{ user_path }}/{{ rsnapshot_config }}:/config"          # contains all relevant configuration files
+      container_default_behavior: compatibility
+      detach: true                     # set to true to leave the container running in background
+      restart_policy: unless-stopped   # must be one of: no, on-failure, always, unless-stopped
+  tags: ['never', 'install']           # 'never' implies you must pass the other tag to execute this block
+
+# --- Uninstall Block of Tasks -------------------------------------------------
+
+- name: Uninstall rsnapshot container
+  block:
+    - name: stop rsnapshot container and remove
+      docker_container:
+        name: rsnapshot
+        keep_volumes: false        # to retain anonymous volumes associated with the removed container
+        state: absent              # must be one of: absent, present, stopped, started
+    - name: delete all rsnapshot images, containers, and volumes
+      file:
+        path: "{{ user_path }}/{{ rsnapshot_config }}"
+        state: absent
+  tags: ['never', 'uninstall']   # 'never' implies you must pass the other tag to execute this block
+

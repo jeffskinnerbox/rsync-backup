@@ -34,7 +34,7 @@
         post_reboot_delay: 30
         test_command: uptime
       when: reboot_required_file.stat.exists
-  tags: ['never', 'install']     # 'never' implies you must pass the tag to execute this block
+  tags: ['never', 'install']     # 'never' implies you must pass the other tag to execute this block
 
 # --- Uninstall Block of Tasks -------------------------------------------------
 
@@ -43,5 +43,5 @@
     - name: message to user
       debug:
         msg: Nothing done. Packages newly installed and up-grades are unchanged.
-  tags: ['never', 'uninstall']   # 'never' implies you must pass the tag to execute this block
+  tags: ['never', 'uninstall']   # 'never' implies you must pass the other tag to execute this block
 

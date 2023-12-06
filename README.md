@@ -5,13 +5,24 @@ Version:      1.5.0
 
 
 <div align="center">
-<img src="http://www.foxbyrd.com/wp-content/uploads/2018/02/file-4.jpg" title="These materials require additional work and are not ready for general use." align="center">
+<img src="https://raw.githubusercontent.com/jeffskinnerbox/blog/main/content/images/banners-bkgrds/work-in-progress.jpg" title="These materials require additional work and are not ready for general use." align="center" width=420px height=219px>
 </div>
 
 
 -----
 
+
+* [Backup a Linux PC to a Synology NAS using Rsync!](https://www.wundertech.net/how-to-backup-a-linux-pc-to-a-synology-nas-using-rsync/)
+* [Use SSH Keys to Automatically Backup a Linux PC to a Synology NAS!](https://www.wundertech.net/use-ssh-keys-to-automatically-backup-a-linux-pc-to-a-synology-nas/)
+* [Use Rsync to Restore Backed Up Files From a Synology NAS to a Linux PC!](https://www.wundertech.net/use-rsync-to-restore-backed-up-files-from-a-synology-nas-to-a-linux-pc/)
+
+
+
+
 * [How to Use Tags in Ansible Playbook (Examples)](https://www.linuxtechi.com/how-to-use-tags-in-ansible-playbook/)
+
+
+
 
 
 # Backup a Linux PC to a Synology NAS Using Rsync

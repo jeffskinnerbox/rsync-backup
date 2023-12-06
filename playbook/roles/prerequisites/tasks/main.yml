@@ -17,14 +17,17 @@
     apt:
       state: latest
       update_cache: false
-      pkg: ['git', 'curl', 'wget', 'ntp', 'apt-transport-https', 'gnupg2']
+      pkg: ['git', 'curl', 'wget', 'ntp', 'gnupg2', 'apt-transport-https', 'ca-certificates', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
+  tags: ['never', 'install']     # 'never' implies you must pass the other tag to execute this block
 
-  - name: install required packages to suport rsync-backup
-    apt:
-      state: latest
-      update_cache: false
-      pkg: ['rsync', 'grsync', 'rsnapshot']
-  tags: ['never', 'install']     # 'never' implies you must pass the tag to execute this block
+# removing this task since debian nolong supports rsnapshot, using docker instance of rsnapshot instead
+- name: install required packages to suport rsync-backup
+  apt:
+    state: latest
+    update_cache: false
+    pkg: ['rsync', 'grsync', 'rsnapshot']
+  tags:
+    - never
 
 # --- Uninstall Block of Tasks -------------------------------------------------
 
@@ -33,5 +36,5 @@
     - name: message to user
       debug:
         msg: Nothing done. Packages newly installed and up-grades are unchanged.
-  tags: ['never', 'uninstall']   # 'never' implies you must pass the tag to execute this block
+  tags: ['never', 'uninstall']   # 'never' implies you must pass the other tag to execute this block
 

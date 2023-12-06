@@ -5,7 +5,7 @@
 # While your within playbook directory, check the following prior to doing the play
 #
 # YAML linter to spot Ansible YAML syntax errors
-#    yamllint playbook.yml roles
+#    yamllint playbook.yml roles/*/tasks
 #
 # Ansible linter to spot Ansible playbook syntax errors
 #    ansible-playbook -i inventory -l test-pi playbook.yml --syntax-check
@@ -24,13 +24,26 @@
 
 - name: Install / Uninstall rsync-backup tools
   hosts: all
-  become: true         # set to 'true' to activate privilege escalation => use sudo and be root by default
+  become: true           # set to 'true' to activate privilege escalation => use sudo and be root by default
   become_method: sudo
   gather_facts: true
   vars:
-    user: backup_user
+    user: backup_user                # user to be create that will own the automated backups
+    user_path: /home/backup_user     # path to users home directory
+    tmp_path: /tmp                   # location for temporary files / executables
+    docker_path: /usr/local/bin      # location for docker executables
+    portainer_port: 9000
+    portainer_agent_port: 9001
+    portainer_data: portainer/data
+    portainer_volumes: portainer/volumes
+    rsnapshot_config: rsnapshot/config       # contains all relevant configuration files
+    rsnapshop_source_data: /home   # optional - storage location for data to be backed up
+    rsnapshop_sink_data: xxx       # optional - storage location for all snapshots
 
   roles:
     - update
     - prerequisites
+    - docker
     - add-user
+    - rsnapshot-container
+

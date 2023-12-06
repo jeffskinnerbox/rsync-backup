@@ -4,7 +4,30 @@ Version:      1.5.0
 -->
 
 
+<div align="center">
+<img src="http://www.foxbyrd.com/wp-content/uploads/2018/02/file-4.jpg" title="These materials require additional work and are not ready for general use." align="center">
+</div>
+
+
+-----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Original Network Backup Tool
+* [Network Backups via Rsync and Rsnapshot](https://github.com/jeffskinnerbox/jeffskinnerbox.github.io/blob/master/content/articles/network-backups-via-rsync-and-rsnapshot.md)
+
 Using a external hard drive, and rsync / rsnapshot as a remote filesystem backup utility,
 I create scheduled incremental backups of my Linux & Windows file systems.
 This light-weight and efficient scheme allows me to create increment backups every 4 hours
